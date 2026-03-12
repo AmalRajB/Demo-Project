@@ -1,0 +1,42 @@
+<div class="container">
+  
+    <div class="d-flex justify-content-end mt-3">
+        <!-- <a class="btn btn-primary mb-3" [routerLink]="['/admin/blogposts/add']">Create New Blogpost</a> -->
+    </div>
+
+
+    <div>
+        @if(isLoading()) {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        }@else{
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category Name</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (value of CategoryServiceResponse(); track value.id) {
+                <tr>
+                    <td>{{ value.id }}</td>
+                    <td>{{ value.categoryName }}</td>
+
+
+                    <td><a class="btn btn-sm btn-secondary" [routerLink]="['/admin/ProductCategory/edit/', value.id]">Edit</a></td>
+                </tr>
+                }
+            </tbody>
+
+
+        </table>
+        }
+
+    </div>
+</div>

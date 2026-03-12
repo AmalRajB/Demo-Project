@@ -1,0 +1,58 @@
+<div class="container">
+
+
+    <div class="mt-5">
+        @if(isLoading()) {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        }@else{
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+
+                    <th>FileName</th>
+                    <th>FileSize</th>
+                    <th>CreatedDate</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (data of files(); track data.id) {
+                <tr>
+
+                    <td>{{ data.fileName }}</td>
+                    <td>{{data.fileSize}}</td>
+                    <td>{{ data.createdDate | date:'dd-MM-yyyy' }}</td>
+
+
+                    <td><a class="btn btn-sm btn-secondary" [routerLink]="['/admin/file/edit/', data.id]">View</a></td>
+                </tr>
+                }
+            </tbody>
+
+
+        </table>
+        <div class="d-flex justify-content-center mt-3">
+
+            <button class="btn btn-outline-primary me-2" (click)="previousPage()" [disabled]="pageNumber() === 1">
+                Previous
+            </button>
+
+            <span class="align-self-center">
+                Page {{pageNumber()}} of {{totalPages()}}
+            </span>
+
+            <button class="btn btn-outline-primary ms-2" (click)="nextPage()"
+                [disabled]="pageNumber() === totalPages()">
+                Next
+            </button>
+
+        </div>
+        }
+
+    </div>
+</div>

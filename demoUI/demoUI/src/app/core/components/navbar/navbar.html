@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Demo</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link " [routerLink]="['']">Home</a>
+      
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+         Options
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-item nav-link " [routerLink]="['admin/listcountry']">Country List</a></li>
+          <li> <a class="nav-item nav-link" [routerLink]="['admin/addcountry']">Add Country</a></li>
+          <li> <a class="nav-item nav-link" [routerLink]="['admin/addstate']">Add State</a></li>
+          <li> <a class="nav-item nav-link " [routerLink]="['admin/statelist']">State List</a></li>
+
+
+        </ul>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Files
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" [routerLink]="['admin/filelist']">File List</a></li>
+          <li><a class="dropdown-item" [routerLink]="['admin/addfile']">Add File</a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Products
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" [routerLink]="['admin/addProductCategory']">Add ProductCategory</a></li>
+          <li><a class="dropdown-item" [routerLink]="['admin/listProductCategory']">List ProductCategory</a></li>
+          <li><a class="dropdown-item" [routerLink]="['admin/product/add']">Add Product</a></li>
+          <li><a class="dropdown-item" [routerLink]="['admin/product/list']">List Product</a></li>
+
+        </ul>
+      </li>
+
+
+
+    </div>
+  </div>
+</nav>

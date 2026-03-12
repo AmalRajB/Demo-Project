@@ -1,0 +1,42 @@
+<div class="container">
+  
+    <div class="d-flex justify-content-end mt-3">
+        <!-- <a class="btn btn-primary mb-3" [routerLink]="['/admin/blogposts/add']">Create New Blogpost</a> -->
+    </div>
+
+
+    <div>
+        @if(isLoading()) {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        }@else{
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Country Name</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (country of response(); track country.id) {
+                <tr>
+                    <td>{{ country.id }}</td>
+                    <td>{{ country.countryName }}</td>
+
+
+                    <td><a class="btn btn-sm btn-secondary" [routerLink]="['/admin/country/edit/', country.id]">Edit</a></td>
+                </tr>
+                }
+            </tbody>
+
+
+        </table>
+        }
+
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="container">
+
+  <h2 class="mt-4">Browse Files</h2>
+
+  <form [formGroup]="filterform">
+
+    <!-- COUNTRY -->
+    <div class="mt-3">
+      <label class="form-label fw-semibold">Country</label>
+
+      <select class="form-select shadow-sm border-primary" formControlName="countryId" (change)="onCountryChange()">
+
+        <option value="">Select Country</option>
+
+        @for(country of countryResponse(); track country.id){
+        <option [value]="country.id">
+          {{country.countryName}}
+        </option>
+        }
+
+      </select>
+    </div>
+
+    <!-- STATE -->
+    <div class="mt-3">
+      <label class="form-label fw-semibold">State</label>
+
+      <select class="form-select shadow-sm border-primary" formControlName="stateId" (change)="onStateChange($event)">
+
+        <option value="">Select State</option>
+
+        @for(state of states; track state.id){
+        <option [value]="state.id">
+          {{state.stateName}}
+        </option>
+        }
+
+      </select>
+    </div>
+  </form>
+
+  <!-- FILE TABLE -->
+
+  <div class="gallery-container row g-4 mt-4 ">
+    @if (files.length === 0 && filterform.value.stateId) {
+    <div class="empty-state">
+      <div class="icon-placeholder">📂</div>
+      <h4>No Files Available</h4>
+      <p class="text-muted">We couldn't find any documents for this selection.</p>
+    </div>
+    } @else {
+
+    @for (file of files; track file.id) {
+    <div class="col-md-4">
+      <div  class="card shadow-sm ">
+        <img class="card-img-top img-fluid" [src]="file.fileUrl" alt="file-data">
+      </div>
+    </div>
+    }
+    }
+  </div>
+</div>
