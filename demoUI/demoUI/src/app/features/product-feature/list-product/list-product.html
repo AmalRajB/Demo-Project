@@ -2,27 +2,45 @@
     <h1 class="mt-4 text-primary">Product List</h1>
 
 
-    <div class="d-flex justify-content-end">
-        <form [formGroup]="form" class="w-45">
-            <select class="form-control" formControlName="category">
-                <option value="">All</option>
 
-                @for (category of categoryResponse(); track category.id) {
-                <option [value]="category.id">{{ category.categoryName }}</option>
-                }
-            </select>
+
+    <div class="d-flex justify-content-end">
+        <form [formGroup]="form" class="row g-2 w-50">
+
+            <div class="col-4">
+                <select class="form-control" formControlName="category">
+                    <option value="">All</option>
+
+                    @for (category of categoryResponse(); track category.id) {
+                    <option [value]="category.id">{{ category.categoryName }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-8">
+                <input type="text" class="form-control" placeholder="Search product..." (input)="onSearch($event)">
+            </div>
+
         </form>
     </div>
 
-    @if(productResponse()?.length === 0) {
+    @if(productResponse()?.data?.length === 0) {
 
     <div class=" d-flex justify-content-center mt-5 alert alert-info">
-        Selected category has no products yet
+        No products available...
     </div>
 
     }@else {
 
-    <table class="table mt-3">
+    @if(isLoading()){
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    }@else {
+
+    <table class="table mt-5">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Product Name</th>
@@ -32,7 +50,7 @@
             </tr>
         </thead>
         <tbody>
-            @for (product of productResponse(); track product.id) {
+            @for (product of products(); track product.id) {
             <tr>
 
                 <td>{{product.productName}}</td>
@@ -55,6 +73,25 @@
             }
         </tbody>
     </table>
+
+    <div class="d-flex justify-content-center mt-3">
+
+        <button class="btn btn-secondary me-2" (click)="previousPage()" [disabled]="pageNumber() === 1">
+            Previous
+        </button>
+
+        <span class="align-self-center">
+            Page {{ pageNumber() }} / {{ totalPages() }}
+        </span>
+
+        <button class="btn btn-secondary ms-2" (click)="nextPage()" [disabled]="pageNumber() === totalPages()">
+            Next
+        </button>
+
+    </div>
+
+
+    }
 
     }
 

@@ -63,9 +63,10 @@ namespace demoWebAPI.API.Controllers
 
         [HttpGet]
 
-        public async Task<IActionResult> GetAllProduct()
+        public async Task<IActionResult> GetAllProduct([FromQuery] paginationDto pagination, [FromQuery] Guid? categoryId, [FromQuery] string? search)
         {
-            var products = await productRepository.GetAll();
+            var products = await productRepository.GetAll(pagination.PageNumber, pagination.PageSize, categoryId, search);
+            var totalRecord = await productRepository.getTotalCount(categoryId, search);
             var response = new List<ProductDto>();
 
             foreach (var product in products)
@@ -83,7 +84,13 @@ namespace demoWebAPI.API.Controllers
                     }
                 });  
             }
-            return Ok(response);
+            return Ok(new
+            {
+                totalRecord,
+                pageNumber = pagination.PageNumber,
+                pageSize = pagination.PageSize,
+                data = response
+            });
         }
 
         [HttpGet]
@@ -111,29 +118,29 @@ namespace demoWebAPI.API.Controllers
             return Ok(response);
         }
 
-        [HttpGet("category/{id:Guid}")]
+        //[HttpGet("category/{id:Guid}")]
 
-        public async Task<IActionResult> GetProductByCategory([FromRoute] Guid id)
-        {
-            var result = await productRepository.GetByCategory(id);
-            if (result == null )
-            {
-                return NotFound();
-            }
-            var response = result.Select(data => new ProductDto
-            {
-                id = data.id,
-                productName = data.productName,
-                productPrice = data.productPrice,
-                categoryId = data.categoryId,
-                category = new CategoryDto
-                {
-                    id = data.category.id,
-                    CategoryName = data.category.CategoryName
-                }
-            }).ToList();
-            return Ok(response);            
-        }
+        //public async Task<IActionResult> GetProductByCategory([FromRoute] Guid id)
+        //{
+        //    var result = await productRepository.GetByCategory(id);
+        //    if (result == null )
+        //    {
+        //        return NotFound();
+        //    }
+        //    var response = result.Select(data => new ProductDto
+        //    {
+        //        id = data.id,
+        //        productName = data.productName,
+        //        productPrice = data.productPrice,
+        //        categoryId = data.categoryId,
+        //        category = new CategoryDto
+        //        {
+        //            id = data.category.id,
+        //            CategoryName = data.category.CategoryName
+        //        }
+        //    }).ToList();
+        //    return Ok(response);            
+        //}
 
         [HttpPut]
         [Route("{id:Guid}")]

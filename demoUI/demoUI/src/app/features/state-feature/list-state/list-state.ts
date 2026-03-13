@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule,RouterLink],
   templateUrl: './list-state.html',
   styleUrl: './list-state.css',
-})
+}) 
 export class ListState {
 
   private stateservices = inject(StateServices);

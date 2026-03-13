@@ -59,28 +59,28 @@ export const routes: Routes = [
         component: HomeComponent
     },
     {
-        path:'admin/addProductCategory',
-        component:AddCategory
+        path: 'admin/addProductCategory',
+        component: AddCategory
     },
     {
-        path:'admin/listProductCategory',
-        component:ListCategory
+        path: 'admin/listProductCategory',
+        component: ListCategory
     },
     {
-        path:'admin/ProductCategory/edit/:id',
-        component:EditCategory
+        path: 'admin/ProductCategory/edit/:id',
+        component: EditCategory
     },
     {
-        path:'admin/product/add',
-        component:AddProduct
+        path: 'admin/product/add',
+        component: AddProduct
     },
     {
-        path:'admin/product/list',
-        component:ListProduct
+        path: 'admin/product/list',
+        component: ListProduct
     },
     {
-        path:'admin/product/edit/:id',
-        component:EditProduct
+        path: 'admin/product/edit/:id',
+        component: EditProduct
     }
 
 ];

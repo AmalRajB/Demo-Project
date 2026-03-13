@@ -25,3 +25,4 @@ export interface EditProductDto {
     productPrice: number,
     categoryId: string
 }
+

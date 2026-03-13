@@ -53,18 +53,35 @@ namespace demoWebAPI.API.Repositories.Implementation
 
         }
 
-        public async Task<IEnumerable<Products>> GetAll()
+        public async Task<List<Products>> GetAll(int pageNumber, int pageSize, Guid? categoryId, string? search)
         {
-            return await dbContext.products.Include(s => s.category).ToListAsync();
-        }
+            var query = dbContext.products
+            .Include(p => p.category)
+            .AsQueryable();
 
-        public async Task<List<Products>> GetByCategory(Guid id)
-        {
-            return await dbContext.products
-                .Include(p => p.category)
-                .Where(p => p.categoryId ==id)
+            if (categoryId.HasValue)
+            {
+                query = query.Where(p => p.categoryId == categoryId);
+            }
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(p => p.productName.Contains(search));
+            }
+
+            return await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
                 .ToListAsync();
         }
+
+        //public async Task<List<Products>> GetByCategory(Guid id)
+        //{
+        //    return await dbContext.products
+        //        .Include(p => p.category)
+        //        .Where(p => p.categoryId ==id)
+        //        .ToListAsync();
+        //}
 
         public async Task<Products?> GetById(Guid id)
         {
@@ -74,6 +91,22 @@ namespace demoWebAPI.API.Repositories.Implementation
                 return null;
             }
             return IsdataExist;
+        }
+
+        public async Task<int> getTotalCount(Guid? categoryId, string? search)
+        {
+            var query = dbContext.products.AsQueryable();
+
+            if (categoryId.HasValue)
+            {
+                query = query.Where(p => p.categoryId == categoryId);
+            }
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(p => p.productName.Contains(search));
+            }
+
+            return await query.CountAsync();
         }
     }
 }
