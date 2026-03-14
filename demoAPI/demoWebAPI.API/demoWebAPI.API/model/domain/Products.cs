@@ -13,5 +13,7 @@ namespace demoWebAPI.API.model.domain
         [ForeignKey("categoryId")]
         public productCategory category { get; set; }
 
+        public ICollection<ProductFile> productFiles { get; set; }
+
     }
 }

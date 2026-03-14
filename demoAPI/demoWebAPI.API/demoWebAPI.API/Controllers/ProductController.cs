@@ -114,7 +114,7 @@ namespace demoWebAPI.API.Controllers
                     id = result.category.id,
                     CategoryName = result.category.CategoryName
                 }
-            };
+            }; 
             return Ok(response);
         }
 
@@ -194,6 +194,7 @@ namespace demoWebAPI.API.Controllers
             };
             return Ok(response);
         }
+
 
     }
 }

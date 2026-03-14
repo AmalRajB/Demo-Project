@@ -12,8 +12,8 @@ using demoWebAPI.API.data;
 namespace demoWebAPI.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260307060728_UpdateFileRelation")]
-    partial class UpdateFileRelation
+    [Migration("20260314060637_done")]
+    partial class done
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,63 @@ namespace demoWebAPI.API.Migrations
                     b.ToTable("fileModels");
                 });
 
+            modelBuilder.Entity("demoWebAPI.API.model.domain.ProductFile", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileExtension")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("productFiles");
+                });
+
+            modelBuilder.Entity("demoWebAPI.API.model.domain.Products", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("categoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("productName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("productPrice")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("categoryId");
+
+                    b.ToTable("products");
+                });
+
             modelBuilder.Entity("demoWebAPI.API.model.domain.State", b =>
                 {
                     b.Property<Guid>("Id")
@@ -96,6 +153,21 @@ namespace demoWebAPI.API.Migrations
                     b.ToTable("States");
                 });
 
+            modelBuilder.Entity("demoWebAPI.API.model.domain.productCategory", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("productCategories");
+                });
+
             modelBuilder.Entity("demoWebAPI.API.model.domain.FileModel", b =>
                 {
                     b.HasOne("demoWebAPI.API.model.domain.State", "State")
@@ -105,6 +177,28 @@ namespace demoWebAPI.API.Migrations
                         .IsRequired();
 
                     b.Navigation("State");
+                });
+
+            modelBuilder.Entity("demoWebAPI.API.model.domain.ProductFile", b =>
+                {
+                    b.HasOne("demoWebAPI.API.model.domain.Products", "Product")
+                        .WithMany("productFiles")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("demoWebAPI.API.model.domain.Products", b =>
+                {
+                    b.HasOne("demoWebAPI.API.model.domain.productCategory", "category")
+                        .WithMany("products")
+                        .HasForeignKey("categoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("category");
                 });
 
             modelBuilder.Entity("demoWebAPI.API.model.domain.State", b =>
@@ -123,9 +217,19 @@ namespace demoWebAPI.API.Migrations
                     b.Navigation("States");
                 });
 
+            modelBuilder.Entity("demoWebAPI.API.model.domain.Products", b =>
+                {
+                    b.Navigation("productFiles");
+                });
+
             modelBuilder.Entity("demoWebAPI.API.model.domain.State", b =>
                 {
                     b.Navigation("Files");
+                });
+
+            modelBuilder.Entity("demoWebAPI.API.model.domain.productCategory", b =>
+                {
+                    b.Navigation("products");
                 });
 #pragma warning restore 612, 618
         }

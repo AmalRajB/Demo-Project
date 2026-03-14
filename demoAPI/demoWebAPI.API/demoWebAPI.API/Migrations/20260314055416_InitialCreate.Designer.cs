@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using demoWebAPI.API.data;
 
@@ -11,9 +12,11 @@ using demoWebAPI.API.data;
 namespace demoWebAPI.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260314055416_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,9 +102,14 @@ namespace demoWebAPI.API.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("Productsid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("Productsid");
 
                     b.ToTable("productFiles");
                 });
@@ -179,10 +187,14 @@ namespace demoWebAPI.API.Migrations
             modelBuilder.Entity("demoWebAPI.API.model.domain.ProductFile", b =>
                 {
                     b.HasOne("demoWebAPI.API.model.domain.Products", "Product")
-                        .WithMany("productFiles")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("demoWebAPI.API.model.domain.Products", null)
+                        .WithMany("productFiles")
+                        .HasForeignKey("Productsid");
 
                     b.Navigation("Product");
                 });

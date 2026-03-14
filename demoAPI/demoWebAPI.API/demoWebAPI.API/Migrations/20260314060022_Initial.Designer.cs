@@ -12,8 +12,8 @@ using demoWebAPI.API.data;
 namespace demoWebAPI.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260311054542_added new tables product,category")]
-    partial class addednewtablesproductcategory
+    [Migration("20260314060022_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,45 @@ namespace demoWebAPI.API.Migrations
                     b.HasIndex("StateId");
 
                     b.ToTable("fileModels");
+                });
+
+            modelBuilder.Entity("demoWebAPI.API.model.domain.ProductFile", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileExtension")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Productsid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("Productsid");
+
+                    b.ToTable("productFiles");
                 });
 
             modelBuilder.Entity("demoWebAPI.API.model.domain.Products", b =>
@@ -145,6 +184,21 @@ namespace demoWebAPI.API.Migrations
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("demoWebAPI.API.model.domain.ProductFile", b =>
+                {
+                    b.HasOne("demoWebAPI.API.model.domain.Products", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("demoWebAPI.API.model.domain.Products", null)
+                        .WithMany("productFiles")
+                        .HasForeignKey("Productsid");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("demoWebAPI.API.model.domain.Products", b =>
                 {
                     b.HasOne("demoWebAPI.API.model.domain.productCategory", "category")
@@ -170,6 +224,11 @@ namespace demoWebAPI.API.Migrations
             modelBuilder.Entity("demoWebAPI.API.model.domain.Country", b =>
                 {
                     b.Navigation("States");
+                });
+
+            modelBuilder.Entity("demoWebAPI.API.model.domain.Products", b =>
+                {
+                    b.Navigation("productFiles");
                 });
 
             modelBuilder.Entity("demoWebAPI.API.model.domain.State", b =>

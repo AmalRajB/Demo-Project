@@ -1,5 +1,6 @@
 ﻿using demoWebAPI.API.model.domain;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace demoWebAPI.API.data
 {
@@ -44,5 +45,16 @@ namespace demoWebAPI.API.data
         public DbSet<productCategory> productCategories { get; set; }
 
         public DbSet<Products> products { get; set; }
+
+        public DbSet<ProductFile> productFiles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProductFile>()
+            .HasOne(pf => pf.Product)
+            .WithMany(p => p.productFiles)
+            .HasForeignKey(pf => pf.ProductId)
+            .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }
