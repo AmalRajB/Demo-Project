@@ -1,0 +1,46 @@
+<div class="container">
+
+    <div class="mt-5 d-flex justify-content-end">
+        <a class="btn btn-primary btn-sm" [routerLink]="['/admin/product-image/add/',id()]">
+            Add Image
+        </a>
+    </div>
+
+
+    @if(isLoading()){
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden"></span>
+        </div>
+    </div>
+    }@else {
+
+    <div class="gallery-container row g-4 mt-4 ">
+        @if (productImageResponse()?.length === 0){
+        <div class="empty-state">
+            <div class="icon-placeholder">📂</div>
+            <h4>No Files Available</h4>
+            <p class="text-muted">We couldn't find any documents for this selection.</p>
+        </div>
+        } @else {
+
+        @for (image of productImageResponse(); track image.id) {
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <img class="card-img-top img-fluid" [src]="image.fileUrl" alt="file-data">
+
+                <div class="image-overlay">
+                    <a class="btn btn-primary btn-sm" [routerLink]="['/admin/product-image/edit/',image.id]" >Update</a>
+                    <button type="button" class="btn btn-danger btn-sm"  (click)="onDelete(image.id)"  >Delete</button>
+                </div>
+
+            </div>
+        </div>
+        }
+        }
+    </div>
+    }
+
+
+
+</div>

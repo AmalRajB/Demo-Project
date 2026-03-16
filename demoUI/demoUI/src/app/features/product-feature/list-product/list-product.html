@@ -46,6 +46,7 @@
                 <th scope="col">Product Name</th>
                 <th scope="col">Product Price</th>
                 <th scope="col">Category</th>
+                <th scope="col">Images</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -56,6 +57,7 @@
                 <td>{{product.productName}}</td>
                 <td>{{product.productPrice}}</td>
                 <td>{{product.category.categoryName}}</td>
+                <td> <a [routerLink]="['/admin/product-image/list/',product.id]">View</a></td>
                 <td>
 
                     <a class="btn btn-sm btn-secondary" [routerLink]="['/admin/product/edit/', product.id]">

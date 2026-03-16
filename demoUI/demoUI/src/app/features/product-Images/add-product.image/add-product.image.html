@@ -1,0 +1,14 @@
+<div class=" container mt-4">
+
+<form class="form" [formGroup]="fileform" (ngSubmit)="onSubmit()">
+
+
+  <div class="mt-3" >
+    <label class="m-2" >File </label>
+    <input  type="file"  #fileInput (change)="onFileSelected($event)">
+  </div>
+
+  <button class="mt-3 btn btn-primary btn-sm" type="submit">Upload</button>
+
+</form>
+</div>

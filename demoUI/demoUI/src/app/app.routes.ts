@@ -15,6 +15,9 @@ import { EditCategory } from './features/productcategory/edit-category/edit-cate
 import { AddProduct } from './features/product-feature/add-product/add-product';
 import { ListProduct } from './features/product-feature/list-product/list-product';
 import { EditProduct } from './features/product-feature/edit-product/edit-product';
+import { AddProductImage } from './features/product-Images/add-product.image/add-product.image';
+import { ListProductImage } from './features/product-Images/list-product.image/list-product.image';
+import { EditProductImage } from './features/product-Images/edit-product.image/edit-product.image';
 
 export const routes: Routes = [
     {
@@ -81,6 +84,18 @@ export const routes: Routes = [
     {
         path: 'admin/product/edit/:id',
         component: EditProduct
+    },
+    {
+        path:'admin/product-image/add/:id',
+        component:AddProductImage
+    },
+    {
+        path:'admin/product-image/list/:id',
+        component:ListProductImage
+    },
+    {
+        path:'admin/product-image/edit/:id',
+        component:EditProductImage
     }
 
 ];

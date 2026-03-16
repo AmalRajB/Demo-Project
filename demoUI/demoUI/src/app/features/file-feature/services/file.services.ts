@@ -38,9 +38,7 @@ export class FileServices {
   }
 
 
-// FileUpload(formData: FormData){
-//   return this.http.post('/api/file/upload', formData);
-// }
+
 
 
 

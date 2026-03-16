@@ -2,5 +2,7 @@
 {
     public class EditProductImageDto
     {
+        public IFormFile File { get; set; }
+        public Guid ProductId { get; set; }
     }
 }
