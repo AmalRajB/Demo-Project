@@ -11,5 +11,7 @@ namespace demoWebAPI.API.Repositories.Interface
         Task<ProductFile?> EditById(Guid id, EditProductImageDto request);
         Task<ProductFile?> DeleteById(Guid id);
         Task<ProductFile> AddById(Guid productId, AddImageByProductId request);
+        Task<IEnumerable<ProductFile>> GetAll();
+        Task<ProductFile?> GetAllById(Guid id);
     }
 }

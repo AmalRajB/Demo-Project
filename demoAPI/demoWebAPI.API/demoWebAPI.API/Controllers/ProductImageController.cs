@@ -173,5 +173,78 @@ namespace demoWebAPI.API.Controllers
 
         }
 
+        [HttpGet("all-details")]
+        public async Task<IActionResult> GetAllDetails()
+        {
+            var result = await productImageRepository.GetAll();
+
+            var response = result.Select(p => new AllproductDetailsDto
+            {
+                // ProductFile
+                ProductFileId = p.id,
+                FileName = p.FileName,
+               
+                FileUrl = $"{Request.Scheme}://{Request.Host}/FileStorage/ProductFiles/{p.FileName}",
+
+
+                // Product
+                ProductId = p.Product.id,
+                ProductName = p.Product.productName,
+                ProductPrice = p.Product.productPrice,
+
+                // Category
+                CategoryId = p.Product.categoryId,
+                Category = new CategoryDto
+                {
+                    id = p.Product.category.id,
+                    CategoryName = p.Product.category.CategoryName
+                }
+            }).ToList();
+
+            return Ok(response);
+        }
+
+
+        [HttpGet("by-id/{id}")]
+
+        public async Task<IActionResult> GetAllDetailsById([FromRoute] Guid id)
+        {
+            var result = await productImageRepository.GetAllById(id);
+            
+            if(result == null)
+            {
+                return NotFound();
+            }
+
+            var response = new AllproductDetailsDto
+            {
+                // ProductFile
+                ProductFileId = result.id,
+                FileName = result.FileName,
+
+                FileUrl = $"{Request.Scheme}://{Request.Host}/FileStorage/ProductFiles/{result.FileName}",
+
+
+                // Product
+                ProductId = result.Product.id,
+                ProductName = result.Product.productName,
+                ProductPrice = result.Product.productPrice,
+
+                // Category
+                CategoryId = result.Product.categoryId,
+                Category = new CategoryDto
+                {
+                    id = result.Product.category.id,
+                    CategoryName = result.Product.category.CategoryName
+                }
+
+
+            };
+
+
+            return Ok(response);
+        }
+
     }
 }
+

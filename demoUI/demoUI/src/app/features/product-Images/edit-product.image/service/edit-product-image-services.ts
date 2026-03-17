@@ -26,15 +26,14 @@ export class EditProductImageServices {
   }
 
 
-  getProductImageById(id: string | undefined) {
 
+  getProductImageById(id: () => string | undefined) {
     return httpResource<ProductFileoutput>(() => {
+      const imageId = id();
 
-      if (!id) return undefined;
+      if (!imageId) return undefined;
 
-      return `${this.baseUrl}/api/ProductImage/${id}`;
-
+      return `${this.baseUrl}/api/ProductImage/${imageId}`;
     });
-
   }
 }

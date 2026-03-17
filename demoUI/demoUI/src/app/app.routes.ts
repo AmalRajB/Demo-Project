@@ -18,6 +18,8 @@ import { EditProduct } from './features/product-feature/edit-product/edit-produc
 import { AddProductImage } from './features/product-Images/add-product.image/add-product.image';
 import { ListProductImage } from './features/product-Images/list-product.image/list-product.image';
 import { EditProductImage } from './features/product-Images/edit-product.image/edit-product.image';
+import { ListInventory } from './features/inventory-feature/list-inventory/list-inventory';
+import { SingleviewInventory } from './features/inventory-feature/singleview-inventory/singleview-inventory';
 
 export const routes: Routes = [
     {
@@ -96,6 +98,14 @@ export const routes: Routes = [
     {
         path:'admin/product-image/edit/:id',
         component:EditProductImage
+    },
+    {
+        path:'admin/inventory/list',
+        component:ListInventory
+    },
+    {
+        path:'admin/inventory/list/:id',
+        component:SingleviewInventory
     }
 
 ];

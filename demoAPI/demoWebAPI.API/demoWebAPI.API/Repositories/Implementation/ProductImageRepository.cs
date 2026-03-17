@@ -82,6 +82,22 @@ namespace demoWebAPI.API.Repositories.Implementation
             return isExist;
         }
 
+        public async Task<IEnumerable<ProductFile>> GetAll()
+        {
+            return await dbContext.productFiles
+            .Include(p => p.Product)
+            .ThenInclude(p => p.category)
+            .ToListAsync();
+        }
+
+        public async Task<ProductFile?> GetAllById(Guid id)
+        {
+            return await dbContext.productFiles
+            .Include(p => p.Product)
+            .ThenInclude(p => p.category)
+            .FirstOrDefaultAsync(p => p.id == id);
+        }
+
         public async Task<ProductFile?> GetById(Guid id)
         {
             return await dbContext.productFiles.FirstOrDefaultAsync(x => x.id == id);

@@ -1,1 +1,68 @@
-<p>{{id()}}</p>
+@if (showimagemodal()) {
+
+<div class="modal-backdrop-custom">
+  <div class="modal-container">
+
+    <!-- HEADER -->
+    <div class="modal-header d-flex justify-content-between align-items-center">
+      <h5>Edit Product Image</h5>
+      <button class="btn btn-sm btn-danger" (click)="closeimagemodal()">X</button>
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+
+      @if (isLoading()) {
+        <p>Loading...</p>
+      } @else {
+
+        <!-- IMAGE PREVIEW -->
+        @if (editImageResponse()) {
+          <div class="text-center mb-3">
+            <img 
+              [src]="editImageResponse()?.fileUrl" 
+              class="img-fluid rounded shadow"
+              style="max-height: 200px;"
+              alt="Current Image"
+            >
+          </div>
+        }
+
+        <!-- FORM -->
+        <form [formGroup]="editImageform" (ngSubmit)="onSubmit()">
+
+          <!-- FILE INPUT -->
+          <div class="mb-3">
+            <label class="form-label">Select New Image</label>
+            <input 
+              type="file" 
+              class="form-control"
+              (change)="onFileSelected($event)">
+          </div>
+
+          <!-- OLD URL -->
+          <div class="mb-3">
+            <label class="form-label">Current URL</label>
+            <input 
+              type="text" 
+              class="form-control"
+              formControlName="oldUrl"
+              readonly>
+          </div>
+
+          <!-- SUBMIT -->
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+              Update Image
+            </button>
+          </div>
+
+        </form>
+      }
+
+    </div>
+
+  </div>
+</div>
+
+}

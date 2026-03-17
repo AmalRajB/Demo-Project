@@ -1,0 +1,17 @@
+<div class="product-container">
+    @for (data of inventoryResponse(); track data.productFileId) {
+
+    <a class="product-card" [routerLink]="['/admin/inventory/list/', data.productFileId]">
+
+        <div class="image-wrapper">
+            <img [src]="data.fileUrl" alt="product image" />
+        </div>
+
+        <div class="product-details">
+            <h3>{{data.productName}}</h3>
+            <p class="price">₹ {{data.productPrice}}</p>
+            <span class="badge bg-secondary p-1">{{data.category.categoryName}}</span>
+        </div>
+    </a>
+    }
+</div>
