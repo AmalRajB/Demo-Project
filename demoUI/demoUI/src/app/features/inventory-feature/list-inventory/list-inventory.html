@@ -1,17 +1,41 @@
-<div class="product-container">
-    @for (data of inventoryResponse(); track data.productFileId) {
+<div class="container">
+  <h2>All Products</h2>
 
-    <a class="product-card" [routerLink]="['/admin/inventory/list/', data.productFileId]">
+  @if (isLoading) {
+    <div class="loading">
+      <p>Loading products...</p>
+    </div>
+  }
 
-        <div class="image-wrapper">
-            <img [src]="data.fileUrl" alt="product image" />
-        </div>
+  @if (errorMessage) {
+    <div class="error">
+      <p>{{ errorMessage }}</p>
+    </div>
+  }
 
-        <div class="product-details">
-            <h3>{{data.productName}}</h3>
-            <p class="price">₹ {{data.productPrice}}</p>
-            <span class="badge bg-secondary p-1">{{data.category.categoryName}}</span>
-        </div>
-    </a>
-    }
+  @if (!isLoading && !errorMessage) {
+    <div class="product-grid">
+      @for (product of products; track product.productId) {
+
+        <a
+          class="product-card"
+          [routerLink]="['/admin/inventory/product/', product.productId]"
+        >
+          <img
+            [src]="getThumbnail(product)"
+            [alt]="product.productName"
+            class="product-image"
+          />
+          <div class="product-info">
+            <h3>{{ product.productName }}</h3>
+            <p class="price">₹{{ product.productPrice }}</p>
+            <p class="category">{{ product.category.categoryName }}</p>
+          </div>
+        </a>
+
+      } @empty {
+        <p>No products found.</p>
+      }
+    </div>
+  }
 </div>

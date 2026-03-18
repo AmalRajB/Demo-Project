@@ -2,7 +2,7 @@
 
 namespace demoWebAPI.API.model.domain
 {
-    public class Products
+    public class Products 
     {
 
         public Guid id { get; set; }
@@ -17,3 +17,4 @@ namespace demoWebAPI.API.model.domain
 
     }
 }
+ 

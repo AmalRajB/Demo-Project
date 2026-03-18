@@ -173,77 +173,102 @@ namespace demoWebAPI.API.Controllers
 
         }
 
+
         [HttpGet("all-details")]
         public async Task<IActionResult> GetAllDetails()
         {
-            var result = await productImageRepository.GetAll();
+            var products = await productImageRepository.GetAll();
 
-            var response = result.Select(p => new AllproductDetailsDto
+            var response = products.Select(product => new AllproductDetailsDto
             {
-                // ProductFile
-                ProductFileId = p.id,
-                FileName = p.FileName,
-               
-                FileUrl = $"{Request.Scheme}://{Request.Host}/FileStorage/ProductFiles/{p.FileName}",
+                ProductId = product.id,
+                ProductName = product.productName,
+                ProductPrice = product.productPrice,
 
-
-                // Product
-                ProductId = p.Product.id,
-                ProductName = p.Product.productName,
-                ProductPrice = p.Product.productPrice,
-
-                // Category
-                CategoryId = p.Product.categoryId,
                 Category = new CategoryDto
                 {
-                    id = p.Product.category.id,
-                    CategoryName = p.Product.category.CategoryName
-                }
+                    id = product.category.id,
+                    CategoryName = product.category.CategoryName
+                },
+
+                ProductFiles = product.productFiles
+                    .OrderBy(f => f.CreatedDate)
+                    .Take(1)
+                    .Select(f => new ProductImageDto
+                    {
+                        Id = f.id,
+                        FileName = f.FileName,
+                        FileExtension = f.FileExtension,
+                        FileSize = f.FileSize,
+                        FileUrl = $"{Request.Scheme}://{Request.Host}/FileStorage/ProductFiles/{f.FileName}",
+                        CreatedDate = f.CreatedDate,
+                        ProductId = f.ProductId
+                    }).ToList()
+
             }).ToList();
 
-            return Ok(response);
+            return Ok(new
+            {
+                success = true,
+                message = "Products retrieved successfully",
+                data = response
+            });
         }
 
 
-        [HttpGet("by-id/{id}")]
-
-        public async Task<IActionResult> GetAllDetailsById([FromRoute] Guid id)
+        [HttpGet("all-details/{productId:Guid}")]
+        public async Task<IActionResult> GetAllDetailsById([FromRoute] Guid productId)
         {
-            var result = await productImageRepository.GetAllById(id);
-            
-            if(result == null)
+            var product = await productImageRepository.GetByid(productId);
+
+            if (product == null)
             {
-                return NotFound();
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Product not found",
+                    data = (object?)null
+                });
             }
 
             var response = new AllproductDetailsDto
             {
-                // ProductFile
-                ProductFileId = result.id,
-                FileName = result.FileName,
+                ProductId = product.id,
+                ProductName = product.productName,
+                ProductPrice = product.productPrice,
 
-                FileUrl = $"{Request.Scheme}://{Request.Host}/FileStorage/ProductFiles/{result.FileName}",
-
-
-                // Product
-                ProductId = result.Product.id,
-                ProductName = result.Product.productName,
-                ProductPrice = result.Product.productPrice,
-
-                // Category
-                CategoryId = result.Product.categoryId,
                 Category = new CategoryDto
                 {
-                    id = result.Product.category.id,
-                    CategoryName = result.Product.category.CategoryName
-                }
+                    id = product.category.id,
+                    CategoryName = product.category.CategoryName
+                },
 
-
+                ProductFiles = product.productFiles
+                    .OrderBy(f => f.CreatedDate)
+                    .Select(f => new ProductImageDto
+                    {
+                        Id = f.id,
+                        FileName = f.FileName,
+                        FileExtension = f.FileExtension,
+                        FileSize = f.FileSize,
+                        FileUrl = $"{Request.Scheme}://{Request.Host}/FileStorage/ProductFiles/{f.FileName}",
+                        CreatedDate = f.CreatedDate,
+                        ProductId = f.ProductId
+                    }).ToList()
             };
 
-
-            return Ok(response);
+            return Ok(new
+            {
+                success = true,
+                message = "Product details retrieved successfully",
+                data = response
+            });
         }
+
+
+
+
+
 
     }
 }

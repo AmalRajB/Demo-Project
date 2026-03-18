@@ -1,0 +1,57 @@
+
+<div class="container">
+
+  @if (isLoading) {
+    <div class="loading">
+      <p>Loading product details...</p>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="error">
+      <p>{{ errorMessage }}</p>
+    </div>
+  }
+
+  @if (!isLoading && product) {
+    <div class="product-detail">
+
+      <div class="image-section">
+
+        @if (selectedImage) {
+          <div class="main-image">
+            <img [src]="selectedImage.fileUrl" [alt]="product.productName" />
+          </div>
+        }
+
+        @if (product.productFiles.length > 1) {
+          <div class="thumbnail-gallery">
+            @for (file of product.productFiles; track file.id) {
+              <img
+                [src]="file.fileUrl"
+                [alt]="file.fileName"
+                [class.active]="selectedImage?.id === file.id"
+                (click)="selectImage(file)"
+                class="thumbnail"
+              />
+            }
+          </div>
+        }
+
+      </div>
+
+      <div class="info-section">
+        <h2>{{ product.productName }}</h2>
+        <p class="price">₹{{ product.productPrice }}</p>
+        <p class="category">Category: {{ product.category.categoryName }}</p>
+        <p class="file-count">Total Images: {{ product.productFiles.length }}</p>
+      </div>
+
+    </div>
+  }
+
+  @if (!isLoading && !product && !errorMessage) {
+    <p>Product not found.</p>
+  }
+
+</div>

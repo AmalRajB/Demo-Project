@@ -82,25 +82,16 @@ namespace demoWebAPI.API.Repositories.Implementation
             return isExist;
         }
 
-        public async Task<IEnumerable<ProductFile>> GetAll()
-        {
-            return await dbContext.productFiles
-            .Include(p => p.Product)
-            .ThenInclude(p => p.category)
-            .ToListAsync();
-        }
 
-        public async Task<ProductFile?> GetAllById(Guid id)
-        {
-            return await dbContext.productFiles
-            .Include(p => p.Product)
-            .ThenInclude(p => p.category)
-            .FirstOrDefaultAsync(p => p.id == id);
-        }
 
-        public async Task<ProductFile?> GetById(Guid id)
+        public async Task<ProductFile?> GetByid(Guid id)
         {
             return await dbContext.productFiles.FirstOrDefaultAsync(x => x.id == id);
+        }
+
+        public Task<ProductFile?> GetById(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<List<ProductFile?>> getByProductId(Guid productId)
@@ -188,6 +179,23 @@ namespace demoWebAPI.API.Repositories.Implementation
             return IsExist;
 
 
+        }
+
+        async Task <IEnumerable<Products>> IProductImageRepository.GetAll()
+        {
+            return await dbContext.products
+        .Include(p => p.category)
+        .Include(p => p.productFiles)
+        .Where(p => p.productFiles.Any())
+        .ToListAsync();
+        }
+
+        async Task<Products?> IProductImageRepository.GetByid(Guid productId)
+        {
+            return await dbContext.products
+        .Include(p => p.category)
+        .Include(p => p.productFiles)
+        .FirstOrDefaultAsync(p => p.id == productId);
         }
     }
 

@@ -1,22 +1,31 @@
-import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
-import { inject, Injectable, InputSignal } from '@angular/core';
+
+// --- services/product-image.service.ts ---
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
-import { inventoryListModel } from '../models/inventory.model';
+import { ApiResponse, ProductDetails } from '../models/inventory.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class InventoryService {
+export class ProductImageService {
 
-  private http = inject(HttpClient)
-  private baseUrl = environment.apiBaseUrl 
+  private baseUrl = environment.apiBaseUrl;
 
-  getAllProductData():HttpResourceRef<inventoryListModel[] | undefined>{
-    return httpResource<inventoryListModel[]>(()=>`${this.baseUrl}/api/ProductImage/all-details`);
+  constructor(private http: HttpClient) {}
+
+  // GET ALL: api/ProductImage/all-details
+  getAllProductDetails(): Observable<ApiResponse<ProductDetails[]>> {
+    return this.http.get<ApiResponse<ProductDetails[]>>(
+      `${this.baseUrl}/api/ProductImage/all-details`
+    );
   }
 
-  getAllDetailsById(id: InputSignal<string | undefined>){
-    return httpResource<inventoryListModel>(()=>`${this.baseUrl}/api/ProductImage/by-id/${id}`);
+  // GET BY ID: api/ProductImage/all-details/{productId}
+  getProductDetailsById(productId: string): Observable<ApiResponse<ProductDetails>> {
+    return this.http.get<ApiResponse<ProductDetails>>(
+      `${this.baseUrl}/api/ProductImage/all-details/${productId}`
+    );
   }
-
 }
